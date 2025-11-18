@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Form</title>
+</head>
+
+<body style="font-family:Arial, sans-serif; background:#eef2f3; margin:0; 
+             display:flex; justify-content:center; align-items:center; 
+             min-height:100vh;">
+
+  <form 
+    action="/submit" 
+    method="POST"
+    onsubmit="
+      let valid = true;
+
+      document.getElementById('nameErr').innerHTML='';
+      document.getElementById('emailErr').innerHTML='';
+      document.getElementById('numberErr').innerHTML='';
+      document.getElementById('genderErr').innerHTML='';
+      document.getElementById('dobErr').innerHTML='';
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const number = document.getElementById('number').value.trim();
+      const gender = document.getElementById('gender').value.trim();
+      const dob = document.getElementById('dob').value;
+
+      if (name.length < 3) {
+        document.getElementById('nameErr').innerHTML='Name must be at least 3 characters.';
+        valid = false;
+      }
+
+      if (!email.includes('@') || !email.includes('.')) {
+        document.getElementById('emailErr').innerHTML='Enter a valid email.';
+        valid = false;
+      }
+
+      if (number.length < 10) {
+        document.getElementById('numberErr').innerHTML='Phone number must be at least 10 digits.';
+        valid = false;
+      }
+
+      if (gender === '') {
+        document.getElementById('genderErr').innerHTML='Gender is required.';
+        valid = false;
+      }
+
+      if (dob === '') {
+        document.getElementById('dobErr').innerHTML='Select your date of birth.';
+        valid = false;
+      }
+
+      return valid;
+    "
+    style="background:white; padding:25px; border-radius:12px; width:330px;
+           box-shadow:0 0 10px rgba(0,0,0,0.1);"
+  >
+
+    <h2 style="color:#7ac60f; text-align:center; margin-top:0;">Simple Form</h2>
+
+    <!-- Name -->
+    <label style="font-weight:600;">Full Name</label>
+    <input type="text" id="name" name="name"
+           style="width:100%; padding:8px; border-radius:6px; margin:5px 0; border:1px solid #ccc;" />
+    <p id="nameErr" style="color:red; font-size:13px;"></p>
+
+    <!-- Email -->
+    <label style="font-weight:600;">Email</label>
+    <input type="email" id="email" name="email"
+           style="width:100%; padding:8px; border-radius:6px; margin:5px 0; border:1px solid #ccc;" />
+    <p id="emailErr" style="color:red; font-size:13px;"></p>
+
+    <!-- Phone -->
+    <label style="font-weight:600;">Phone Number</label>
+    <input type="tel" id="number" name="number"
+           style="width:100%; padding:8px; border-radius:6px; margin:5px 0; border:1px solid #ccc;" />
+    <p id="numberErr" style="color:red; font-size:13px;"></p>
+
+    <!-- Gender -->
+    <label style="font-weight:600;">Gender</label>
+    <input type="text" id="gender" name="gender"
+           style="width:100%; padding:8px; border-radius:6px; margin:5px 0; border:1px solid #ccc;" />
+    <p id="genderErr" style="color:red; font-size:13px;"></p>
+
+    <!-- DOB -->
+    <label style="font-weight:600;">Date of Birth</label>
+    <input type="date" id="dob" name="dob"
+           style="width:100%; padding:8px; border-radius:6px; margin:5px 0; border:1px solid #ccc;" />
+    <p id="dobErr" style="color:red; font-size:13px;"></p>
+
+    <!-- Submit -->
+    <button type="submit"
+            style="width:100%; padding:10px; font-size:16px; border:none; 
+                   background:#7ac60f; color:white; border-radius:6px; cursor:pointer;">
+      Submit
+    </button>
+
+  </form>
+
+</body>
+</html>
