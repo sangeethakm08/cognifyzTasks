@@ -1,104 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simple Form</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Registration</title>
 </head>
+<body style="margin:0; padding:5px; font-family:Arial, sans-serif; background:#f5f5f5; height:100vh; overflow:hidden; display:flex; align-items:center; justify-content:center;">
 
-<body style="font-family:Arial, sans-serif; background:#eef2f3; margin:0; 
-             display:flex; justify-content:center; align-items:center; 
-             min-height:100vh;">
+  <div style="background:#ffffff; width:90%; max-width:300px; padding:12px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); box-sizing:border-box;">
 
-  <form 
-    action="/submit" 
-    method="POST"
-    onsubmit="
-      let valid = true;
+    <h2 style="text-align:center; margin:0 0 10px 0; font-size:18px; color:#333;">
+      Registration Form
+    </h2>
 
-      document.getElementById('nameErr').innerHTML='';
-      document.getElementById('emailErr').innerHTML='';
-      document.getElementById('numberErr').innerHTML='';
-      document.getElementById('genderErr').innerHTML='';
-      document.getElementById('dobErr').innerHTML='';
+    <form method="POST" action="/submit" id="userRegistrationForm" novalidate>
 
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const number = document.getElementById('number').value.trim();
-      const gender = document.getElementById('gender').value.trim();
-      const dob = document.getElementById('dob').value;
+      <div style="margin-bottom:6px;">
+        <label style="display:block; color:#333; margin-bottom:2px; font-size:12px; font-weight:500;">
+          Full Name <span style="color:#e74c3c;">*</span>
+        </label>
+        <input type="text" name="name" id="inputName" 
+               style="width:100%; padding:5px 8px; border:1px solid #ddd; border-radius:4px; font-size:13px; box-sizing:border-box;"
+               onfocus="this.style.borderColor='#3498db'"
+               onblur="this.style.borderColor='#ddd'">
+        <div id="nameErrorMsg" style="color:#e74c3c; font-size:10px; margin-top:1px; min-height:10px;">
+          <%- typeof serverErrors !== 'undefined' && serverErrors.name ? serverErrors.name : '' %>
+        </div>
+      </div>
 
-      if (name.length < 3) {
-        document.getElementById('nameErr').innerHTML='Name must be at least 3 characters.';
-        valid = false;
-      }
+      <div style="margin-bottom:6px;">
+        <label style="display:block; color:#333; margin-bottom:2px; font-size:12px; font-weight:500;">
+          Email <span style="color:#e74c3c;">*</span>
+        </label>
+        <input type="email" name="email" id="inputEmail"
+               style="width:100%; padding:5px 8px; border:1px solid #ddd; border-radius:4px; font-size:13px; box-sizing:border-box;"
+               onfocus="this.style.borderColor='#3498db'"
+               onblur="this.style.borderColor='#ddd'">
+        <div id="emailErrorMsg" style="color:#e74c3c; font-size:10px; margin-top:1px; min-height:10px;">
+          <%- typeof serverErrors !== 'undefined' && serverErrors.email ? serverErrors.email : '' %>
+        </div>
+      </div>
 
-      if (!email.includes('@') || !email.includes('.')) {
-        document.getElementById('emailErr').innerHTML='Enter a valid email.';
-        valid = false;
-      }
+      <div style="margin-bottom:6px;">
+        <label style="display:block; color:#333; margin-bottom:2px; font-size:12px; font-weight:500;">
+          Phone <span style="color:#e74c3c;">*</span>
+        </label>
+        <input type="tel" name="number" id="inputPhone"
+               style="width:100%; padding:5px 8px; border:1px solid #ddd; border-radius:4px; font-size:13px; box-sizing:border-box;"
+               onfocus="this.style.borderColor='#3498db'"
+               onblur="this.style.borderColor='#ddd'">
+        <div id="phoneErrorMsg" style="color:#e74c3c; font-size:10px; margin-top:1px; min-height:10px;">
+          <%- typeof serverErrors !== 'undefined' && serverErrors.number ? serverErrors.number : '' %>
+        </div>
+      </div>
 
-      if (number.length < 10) {
-        document.getElementById('numberErr').innerHTML='Phone number must be at least 10 digits.';
-        valid = false;
-      }
+      <div style="margin-bottom:6px;">
+        <label style="display:block; color:#333; margin-bottom:2px; font-size:12px; font-weight:500;">
+          Gender <span style="color:#e74c3c;">*</span>
+        </label>
+        <input type="text" name="gender" id="inputGender"
+               style="width:100%; padding:5px 8px; border:1px solid #ddd; border-radius:4px; font-size:13px; box-sizing:border-box;"
+               onfocus="this.style.borderColor='#3498db'"
+               onblur="this.style.borderColor='#ddd'">
+        <div id="genderErrorMsg" style="color:#e74c3c; font-size:10px; margin-top:1px; min-height:10px;">
+          <%- typeof serverErrors !== 'undefined' && serverErrors.gender ? serverErrors.gender : '' %>
+        </div>
+      </div>
 
-      if (gender === '') {
-        document.getElementById('genderErr').innerHTML='Gender is required.';
-        valid = false;
-      }
+      <div style="margin-bottom:6px;">
+        <label style="display:block; color:#333; margin-bottom:2px; font-size:12px; font-weight:500;">
+          Date of Birth <span style="color:#e74c3c;">*</span>
+        </label>
+        <input type="date" name="dob" id="inputDOB"
+               style="width:100%; padding:5px 8px; border:1px solid #ddd; border-radius:4px; font-size:13px; box-sizing:border-box;"
+               onfocus="this.style.borderColor='#3498db'"
+               onblur="this.style.borderColor='#ddd'">
+        <div id="dobErrorMsg" style="color:#e74c3c; font-size:10px; margin-top:1px; min-height:10px;">
+          <%- typeof serverErrors !== 'undefined' && serverErrors.dob ? serverErrors.dob : '' %>
+        </div>
+      </div>
 
-      if (dob === '') {
-        document.getElementById('dobErr').innerHTML='Select your date of birth.';
-        valid = false;
-      }
+      <div style="margin-bottom:6px;">
+        <label style="display:block; color:#333; margin-bottom:2px; font-size:12px; font-weight:500;">
+          Password <span style="color:#e74c3c;">*</span>
+        </label>
+        <input type="password" name="password" id="inputPassword"
+               style="width:100%; padding:5px 8px; border:1px solid #ddd; border-radius:4px; font-size:13px; box-sizing:border-box;"
+               onfocus="this.style.borderColor='#3498db'"
+               onblur="this.style.borderColor='#ddd'">
+        <div id="passwordErrorMsg" style="color:#e74c3c; font-size:10px; margin-top:1px; min-height:10px;">
+          <%- typeof serverErrors !== 'undefined' && serverErrors.password ? serverErrors.password : '' %>
+        </div>
+      </div>
 
-      return valid;
-    "
-    style="background:white; padding:25px; border-radius:12px; width:330px;
-           box-shadow:0 0 10px rgba(0,0,0,0.1);"
-  >
+      <div style="margin-bottom:8px;">
+        <label style="display:block; color:#333; margin-bottom:2px; font-size:12px; font-weight:500;">
+          Confirm Password <span style="color:#e74c3c;">*</span>
+        </label>
+        <input type="password" name="confirmPassword" id="inputPasswordConfirm"
+               style="width:100%; padding:5px 8px; border:1px solid #ddd; border-radius:4px; font-size:13px; box-sizing:border-box;"
+               onfocus="this.style.borderColor='#3498db'"
+               onblur="this.style.borderColor='#ddd'">
+        <div id="confirmPasswordErrorMsg" style="color:#e74c3c; font-size:10px; margin-top:1px; min-height:10px;">
+          <%- typeof serverErrors !== 'undefined' && serverErrors.confirmPassword ? serverErrors.confirmPassword : '' %>
+        </div>
+      </div>
 
-    <h2 style="color:#7ac60f; text-align:center; margin-top:0;">Simple Form</h2>
+      <button type="submit" 
+              style="width:100%; padding:7px; background:#3498db; color:#fff; border:none; border-radius:4px; font-size:13px; font-weight:600; cursor:pointer;"
+              onmouseover="this.style.background='#2980b9'"
+              onmouseout="this.style.background='#3498db'">
+        Submit
+      </button>
 
-    <!-- Name -->
-    <label style="font-weight:600;">Full Name</label>
-    <input type="text" id="name" name="name"
-           style="width:100%; padding:8px; border-radius:6px; margin:5px 0; border:1px solid #ccc;" />
-    <p id="nameErr" style="color:red; font-size:13px;"></p>
+    </form>
 
-    <!-- Email -->
-    <label style="font-weight:600;">Email</label>
-    <input type="email" id="email" name="email"
-           style="width:100%; padding:8px; border-radius:6px; margin:5px 0; border:1px solid #ccc;" />
-    <p id="emailErr" style="color:red; font-size:13px;"></p>
+  </div>
 
-    <!-- Phone -->
-    <label style="font-weight:600;">Phone Number</label>
-    <input type="tel" id="number" name="number"
-           style="width:100%; padding:8px; border-radius:6px; margin:5px 0; border:1px solid #ccc;" />
-    <p id="numberErr" style="color:red; font-size:13px;"></p>
-
-    <!-- Gender -->
-    <label style="font-weight:600;">Gender</label>
-    <input type="text" id="gender" name="gender"
-           style="width:100%; padding:8px; border-radius:6px; margin:5px 0; border:1px solid #ccc;" />
-    <p id="genderErr" style="color:red; font-size:13px;"></p>
-
-    <!-- DOB -->
-    <label style="font-weight:600;">Date of Birth</label>
-    <input type="date" id="dob" name="dob"
-           style="width:100%; padding:8px; border-radius:6px; margin:5px 0; border:1px solid #ccc;" />
-    <p id="dobErr" style="color:red; font-size:13px;"></p>
-
-    <!-- Submit -->
-    <button type="submit"
-            style="width:100%; padding:10px; font-size:16px; border:none; 
-                   background:#7ac60f; color:white; border-radius:6px; cursor:pointer;">
-      Submit
-    </button>
-
-  </form>
+  <script>
+    (function() {
+      const form = document.getElementById('userRegistrationForm');
+      
+      form.addEventListener('submit', function(e) {
+        let valid = true;
+        
+        function showError(id, msg) {
+          document.getElementById(id).textContent = msg;
+        }
+        
+        function clearError(id) {
+          document.getElementById(id).textContent = '';
+        }
+        
+        ['nameErrorMsg', 'emailErrorMsg', 'phoneErrorMsg', 'genderErrorMsg', 
+         'dobErrorMsg', 'passwordErrorMsg', 'confirmPasswordErrorMsg'].forEach(clearError);
+        
+        const name = document.getElementById('inputName').value.trim();
+        const email = document.getElementById('inputEmail').value.trim();
+        const phone = document.getElementById('inputPhone').value.trim();
+        const gender = document.getElementById('inputGender').value.trim();
+        const dob = document.getElementById('inputDOB').value;
+        const pass = document.getElementById('inputPassword').value;
+        const passConfirm = document.getElementById('inputPasswordConfirm').value;
+        
+        if (name.length < 3) {
+          showError('nameErrorMsg', 'Name must be at least 3 characters.');
+          valid = false;
+        }
+        
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailPattern.test(email)) {
+          showError('emailErrorMsg', 'Invalid email format.');
+          valid = false;
+        }
+        
+        const phoneDigits = phone.replace(/\D/g, '');
+        if (phoneDigits.length < 10) {
+          showError('phoneErrorMsg', 'Phone must have at least 10 digits.');
+          valid = false;
+        }
+        
+        if (gender.length === 0) {
+          showError('genderErrorMsg', 'Gender is required.');
+          valid = false;
+        }
+        
+        if (dob.length === 0) {
+          showError('dobErrorMsg', 'Date of birth is required.');
+          valid = false;
+        }
+        
+        if (pass.length < 6) {
+          showError('passwordErrorMsg', 'Password must be at least 6 characters.');
+          valid = false;
+        }
+        
+        if (pass !== passConfirm) {
+          showError('confirmPasswordErrorMsg', 'Passwords do not match.');
+          valid = false;
+        }
+        
+        if (!valid) {
+          e.preventDefault();
+        }
+      });
+    })();
+  </script>
 
 </body>
 </html>

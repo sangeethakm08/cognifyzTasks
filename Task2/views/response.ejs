@@ -2,21 +2,79 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Response</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registration Successful</title>
 </head>
 
-<body style="font-family:Arial, sans-serif; background:#eef1ff; padding-top:40px; margin:0; text-align:center;">
+<body style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+             background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+             margin:0; padding:20px; min-height:100vh; display:flex; 
+             justify-content:center; align-items:center;">
 
-  <div style="background:white; padding:25px 40px; display:inline-block;
-              border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.1); text-align:left;">
+  <div style="background:white; padding:40px 50px; border-radius:15px; 
+              max-width:500px; width:100%; box-shadow:0 8px 25px rgba(0,0,0,0.15);">
 
-    <h2 style="color:#7ac60f; text-align:center;">Form Submitted Successfully</h2>
+    <div style="text-align:center; margin-bottom:30px;">
+      <div style="width:60px; height:60px; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                  border-radius:50%; margin:0 auto 15px; display:flex; align-items:center; 
+                  justify-content:center; font-size:30px; color:white;">
+        ✓
+      </div>
+      <h2 style="color:#667eea; margin:0; font-size:26px; font-weight:600;">
+        Registration Successful!
+      </h2>
+      <p style="color:#666; margin-top:8px; font-size:14px;">
+        Your information has been submitted successfully.
+      </p>
+    </div>
 
-    <p><strong>Name:</strong> <%= name %></p>
-    <p><strong>Email:</strong> <%= email %></p>
-    <p><strong>Phone Number:</strong> <%= number %></p>
-    <p><strong>Gender:</strong> <%= gender %></p>
-    <p><strong>Date of Birth:</strong> <%= dob %></p>
+    <div style="background:#f8f9fa; padding:25px; border-radius:10px; margin-bottom:25px;">
+      <h3 style="color:#333; margin-top:0; margin-bottom:20px; font-size:18px; 
+                 border-bottom:2px solid #667eea; padding-bottom:10px;">
+        Submitted Information
+      </h3>
+      
+      <div style="margin-bottom:15px;">
+        <strong style="color:#555; display:inline-block; width:140px; font-size:14px;">Full Name:</strong>
+        <span style="color:#333; font-size:14px;"><%= name %></span>
+      </div>
+
+      <div style="margin-bottom:15px;">
+        <strong style="color:#555; display:inline-block; width:140px; font-size:14px;">Email Address:</strong>
+        <span style="color:#333; font-size:14px;"><%= email %></span>
+      </div>
+
+      <div style="margin-bottom:15px;">
+        <strong style="color:#555; display:inline-block; width:140px; font-size:14px;">Phone Number:</strong>
+        <span style="color:#333; font-size:14px;"><%= number %></span>
+      </div>
+
+      <div style="margin-bottom:15px;">
+        <strong style="color:#555; display:inline-block; width:140px; font-size:14px;">Gender:</strong>
+        <span style="color:#333; font-size:14px;"><%= gender %></span>
+      </div>
+
+      <div style="margin-bottom:15px;">
+        <strong style="color:#555; display:inline-block; width:140px; font-size:14px;">Date of Birth:</strong>
+        <span style="color:#333; font-size:14px;"><%= dob %></span>
+      </div>
+
+      <div style="margin-bottom:0;">
+        <strong style="color:#555; display:inline-block; width:140px; font-size:14px;">Password:</strong>
+        <span style="color:#333; font-size:14px;"><%= password %></span>
+      </div>
+    </div>
+
+    <div style="text-align:center;">
+      <a href="/" 
+         style="display:inline-block; padding:12px 30px; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                color:white; text-decoration:none; border-radius:8px; font-weight:600; 
+                transition:transform 0.2s, box-shadow 0.2s; font-size:14px;"
+         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(102,126,234,0.4)'"
+         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+        Submit Another Form
+      </a>
+    </div>
 
   </div>
 
