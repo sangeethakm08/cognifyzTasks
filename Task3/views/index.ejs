@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Contact Form</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #a8e6cf 0%, #dcedc8 100%);
+      --secondary-gradient: linear-gradient(135deg, #ffd3b6 0%, #ffaaa5 100%);
+      --accent-gradient: linear-gradient(135deg, #7fcdbb 0%, #a8e6cf 100%);
+      --glass-bg: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.2);
+      --text-primary: #1a1a2e;
+      --text-secondary: #6c757d;
+      --shadow-soft: 0 8px 32px 0 rgba(127, 205, 187, 0.3);
+      --shadow-hover: 0 12px 40px 0 rgba(127, 205, 187, 0.4);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--primary-gradient);
+      min-height: 100vh;
+      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Static Background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(168, 230, 207, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(127, 205, 187, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255, 211, 182, 0.2) 0%, transparent 50%);
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.03) 50%, transparent 70%),
+        linear-gradient(-45deg, transparent 30%, rgba(255, 255, 255, 0.03) 50%, transparent 70%);
+      background-size: 100px 100px;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    .main-container {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Enhanced Glassmorphism Hero Section */
+    .hero-section {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.75) 100%);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 2px solid rgba(45, 80, 22, 0.2);
+      border-radius: 28px;
+      padding: 50px 40px;
+      text-align: center;
+      margin-bottom: 40px;
+      box-shadow: 
+        0 8px 32px 0 rgba(127, 205, 187, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      animation: fadeInDown 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-section::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-section h1 {
+      font-size: 2.75rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #2d5016 0%, #4a7c2a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-section p {
+      font-size: 1.15rem;
+      color: #2d5016;
+      font-weight: 500;
+    }
+
+    /* Enhanced Glassmorphism Form Card */
+    .form-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.75) 100%);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 2px solid rgba(45, 80, 22, 0.2);
+      border-radius: 28px;
+      padding: 50px;
+      box-shadow: 
+        0 8px 32px 0 rgba(127, 205, 187, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8),
+        0 0 0 1px rgba(45, 80, 22, 0.1);
+      margin-bottom: 30px;
+      animation: slideInUp 0.8s ease-out;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .form-card:hover::before {
+      left: 100%;
+    }
+
+    .form-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 
+        0 16px 48px 0 rgba(127, 205, 187, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        0 0 0 1px rgba(45, 80, 22, 0.2);
+      border-color: rgba(45, 80, 22, 0.3);
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-section-title {
+      font-size: 1.85rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #2d5016 0%, #4a7c2a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 35px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid;
+      border-image: linear-gradient(90deg, rgba(45, 80, 22, 0.3) 0%, rgba(45, 80, 22, 0.1) 50%, rgba(45, 80, 22, 0.3) 100%) 1;
+      position: relative;
+    }
+
+    .form-section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, rgba(45, 80, 22, 0.6), transparent);
+      border-radius: 2px;
+    }
+
+    /* Professional Form Fields */
+    .form-group-wrapper {
+      margin-bottom: 22px;
+      position: relative;
+    }
+
+    .form-group-wrapper:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #2d5016;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      letter-spacing: 0.4px;
+    }
+
+    .form-label .required {
+      color: #ff6b6b;
+      margin-left: 4px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .form-control,
+    .form-select {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 2px solid rgba(45, 80, 22, 0.2);
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      color: #2d5016;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+      font-weight: 400;
+      box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.05),
+        0 1px 2px rgba(45, 80, 22, 0.1);
+    }
+
+    .form-control::placeholder {
+      color: rgba(45, 80, 22, 0.5);
+      font-weight: 400;
+    }
+
+    .form-control:hover,
+    .form-select:hover {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+      border-color: rgba(45, 80, 22, 0.3);
+      box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.05),
+        0 2px 4px rgba(45, 80, 22, 0.15);
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 100%);
+      border-color: rgba(45, 80, 22, 0.5);
+      box-shadow: 
+        0 0 0 4px rgba(127, 205, 187, 0.2),
+        inset 0 2px 4px rgba(0, 0, 0, 0.05),
+        0 4px 8px rgba(45, 80, 22, 0.15);
+      outline: none;
+      color: #2d5016;
+      transform: translateY(-1px);
+    }
+
+
+    .form-select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232d5016' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 35px;
+    }
+
+    .form-select option {
+      background: #ffffff;
+      color: #2d5016;
+      padding: 10px;
+    }
+
+
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+      padding-top: 8px;
+    }
+
+    .error-message {
+      color: #ff6b6b;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      display: block;
+      font-weight: 500;
+      animation: shake 0.5s ease;
+      padding-left: 4px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .submit-button {
+      background: var(--accent-gradient);
+      border: none;
+      border-radius: 14px;
+      padding: 14px 50px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 
+        0 8px 24px rgba(127, 205, 187, 0.4),
+        0 4px 12px rgba(127, 205, 187, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .submit-button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .submit-button:hover::before {
+      width: 400px;
+      height: 400px;
+    }
+
+    .submit-button:hover {
+      transform: translateY(-4px);
+      box-shadow: 
+        0 12px 36px rgba(127, 205, 187, 0.5),
+        0 6px 16px rgba(168, 230, 207, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      background: linear-gradient(135deg, #6bc4a6 0%, #a8e6cf 100%);
+    }
+
+    .submit-button:active {
+      transform: translateY(-1px);
+    }
+
+    .submit-button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .loading-spinner {
+      display: none;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Password Strength Indicator */
+    .password-strength {
+      margin-top: 8px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .password-strength.active {
+      display: block;
+    }
+
+    .password-strength-bar {
+      height: 100%;
+      width: 0%;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .password-strength-bar.weak {
+      width: 33%;
+      background: #ff6b6b;
+    }
+
+    .password-strength-bar.medium {
+      width: 66%;
+      background: #ffd93d;
+    }
+
+    .password-strength-bar.strong {
+      width: 100%;
+      background: #51cf66;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero-section {
+        padding: 40px 30px;
+      }
+
+      .hero-section h1 {
+        font-size: 2.25rem;
+      }
+
+      .form-card {
+        padding: 35px 25px;
+      }
+
+    }
+
+    @media (max-width: 576px) {
+      body {
+        padding: 20px 15px;
+      }
+
+      .hero-section {
+        padding: 35px 25px;
+        border-radius: 20px;
+      }
+
+      .hero-section h1 {
+        font-size: 2rem;
+      }
+
+      .form-card {
+        padding: 30px 20px;
+        border-radius: 20px;
+      }
+
+      .form-section-title {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Date picker styling */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(0.3) sepia(1) saturate(2) hue-rotate(60deg);
+      cursor: pointer;
+      opacity: 0.7;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="hero-section">
+      <h1>Professional Contact Form</h1>
+      <p>Complete the form below with your information</p>
+    </div>
+
+    <div class="form-card">
+      <h2 class="form-section-title">
+        Personal Information
+      </h2>
+      
+      <form method="POST" action="/process-form" id="contactForm" novalidate>
+        <!-- Full Name -->
+        <div class="form-group-wrapper">
+          <label for="name" class="form-label">
+            Full Name
+            <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              class="form-control" 
+              id="name" 
+              name="name" 
+              placeholder="Enter your full name"
+              value="<%= typeof submittedData !== 'undefined' && submittedData ? submittedData.userNameField : '' %>"
+              required>
+          </div>
+          <span class="error-message" id="nameError">
+            <%- typeof submissionErrors !== 'undefined' && submissionErrors && submissionErrors.name ? submissionErrors.name : '' %>
+          </span>
+        </div>
+
+        <!-- Email Address -->
+        <div class="form-group-wrapper">
+          <label for="email" class="form-label">
+            Email Address
+            <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input 
+              type="email" 
+              class="form-control" 
+              id="email" 
+              name="email"
+              placeholder="your.email@example.com"
+              value="<%= typeof submittedData !== 'undefined' && submittedData ? submittedData.userEmailField : '' %>"
+              required>
+          </div>
+          <span class="error-message" id="emailError">
+            <%- typeof submissionErrors !== 'undefined' && submissionErrors && submissionErrors.email ? submissionErrors.email : '' %>
+          </span>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-group-wrapper">
+          <label for="phone" class="form-label">
+            Phone Number
+            <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input 
+              type="tel" 
+              class="form-control" 
+              id="phone" 
+              name="phone"
+              placeholder="+1 (555) 123-4567"
+              value="<%= typeof submittedData !== 'undefined' && submittedData ? submittedData.userPhoneField : '' %>"
+              required>
+          </div>
+          <span class="error-message" id="phoneError">
+            <%- typeof submissionErrors !== 'undefined' && submissionErrors && submissionErrors.phone ? submissionErrors.phone : '' %>
+          </span>
+        </div>
+
+        <!-- Gender -->
+        <div class="form-group-wrapper">
+          <label for="gender" class="form-label">
+            Gender
+            <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <select class="form-select" id="gender" name="gender" required>
+              <option value="">Select your gender</option>
+              <option value="Male" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userGenderField === 'Male' ? 'selected' : '' %>>Male</option>
+              <option value="Female" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userGenderField === 'Female' ? 'selected' : '' %>>Female</option>
+              <option value="Other" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userGenderField === 'Other' ? 'selected' : '' %>>Other</option>
+              <option value="Prefer not to say" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userGenderField === 'Prefer not to say' ? 'selected' : '' %>>Prefer not to say</option>
+            </select>
+          </div>
+          <span class="error-message" id="genderError">
+            <%- typeof submissionErrors !== 'undefined' && submissionErrors && submissionErrors.gender ? submissionErrors.gender : '' %>
+          </span>
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="form-group-wrapper">
+          <label for="dob" class="form-label">
+            Date of Birth
+            <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input 
+              type="date" 
+              class="form-control" 
+              id="dob" 
+              name="dob"
+              value="<%= typeof submittedData !== 'undefined' && submittedData ? submittedData.userDOBField : '' %>"
+              required>
+          </div>
+          <span class="error-message" id="dobError">
+            <%- typeof submissionErrors !== 'undefined' && submissionErrors && submissionErrors.dob ? submissionErrors.dob : '' %>
+          </span>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group-wrapper">
+          <label for="password" class="form-label">
+            Password
+            <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input 
+              type="password" 
+              class="form-control" 
+              id="password" 
+              name="password"
+              placeholder="Minimum 6 characters"
+              required>
+          </div>
+          <div class="password-strength" id="passwordStrength">
+            <div class="password-strength-bar" id="passwordStrengthBar"></div>
+          </div>
+          <span class="error-message" id="passwordError">
+            <%- typeof submissionErrors !== 'undefined' && submissionErrors && submissionErrors.password ? submissionErrors.password : '' %>
+          </span>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group-wrapper">
+          <label for="confirmPassword" class="form-label">
+            Confirm Password
+            <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input 
+              type="password" 
+              class="form-control" 
+              id="confirmPassword" 
+              name="confirmPassword"
+              placeholder="Re-enter your password"
+              required>
+          </div>
+          <span class="error-message" id="confirmPasswordError">
+            <%- typeof submissionErrors !== 'undefined' && submissionErrors && submissionErrors.confirmPassword ? submissionErrors.confirmPassword : '' %>
+          </span>
+        </div>
+
+        <!-- Country -->
+        <div class="form-group-wrapper">
+          <label for="country" class="form-label">
+            Country
+            <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <select class="form-select" id="country" name="country" required>
+              <option value="">Select your country</option>
+              <option value="USA" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.selectedCountry === 'USA' ? 'selected' : '' %>>United States</option>
+              <option value="UK" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.selectedCountry === 'UK' ? 'selected' : '' %>>United Kingdom</option>
+              <option value="Canada" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.selectedCountry === 'Canada' ? 'selected' : '' %>>Canada</option>
+              <option value="Australia" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.selectedCountry === 'Australia' ? 'selected' : '' %>>Australia</option>
+              <option value="India" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.selectedCountry === 'India' ? 'selected' : '' %>>India</option>
+              <option value="Germany" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.selectedCountry === 'Germany' ? 'selected' : '' %>>Germany</option>
+              <option value="France" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.selectedCountry === 'France' ? 'selected' : '' %>>France</option>
+              <option value="Japan" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.selectedCountry === 'Japan' ? 'selected' : '' %>>Japan</option>
+              <option value="China" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.selectedCountry === 'China' ? 'selected' : '' %>>China</option>
+              <option value="Brazil" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.selectedCountry === 'Brazil' ? 'selected' : '' %>>Brazil</option>
+              <option value="Other" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.selectedCountry === 'Other' ? 'selected' : '' %>>Other</option>
+            </select>
+          </div>
+          <span class="error-message" id="countryError">
+            <%- typeof submissionErrors !== 'undefined' && submissionErrors && submissionErrors.country ? submissionErrors.country : '' %>
+          </span>
+        </div>
+
+        <!-- Occupation -->
+        <div class="form-group-wrapper">
+          <label for="occupation" class="form-label">
+            Occupation
+            <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <select class="form-select" id="occupation" name="occupation" required>
+              <option value="">Select your occupation</option>
+              <option value="Software Engineer" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Software Engineer' ? 'selected' : '' %>>Software Engineer</option>
+              <option value="Data Scientist" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Data Scientist' ? 'selected' : '' %>>Data Scientist</option>
+              <option value="Product Manager" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Product Manager' ? 'selected' : '' %>>Product Manager</option>
+              <option value="Business Analyst" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Business Analyst' ? 'selected' : '' %>>Business Analyst</option>
+              <option value="Marketing Manager" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Marketing Manager' ? 'selected' : '' %>>Marketing Manager</option>
+              <option value="Sales Executive" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Sales Executive' ? 'selected' : '' %>>Sales Executive</option>
+              <option value="Consultant" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Consultant' ? 'selected' : '' %>>Consultant</option>
+              <option value="Designer" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Designer' ? 'selected' : '' %>>Designer</option>
+              <option value="Teacher" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Teacher' ? 'selected' : '' %>>Teacher</option>
+              <option value="Doctor" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Doctor' ? 'selected' : '' %>>Doctor</option>
+              <option value="Lawyer" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Lawyer' ? 'selected' : '' %>>Lawyer</option>
+              <option value="Engineer" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Engineer' ? 'selected' : '' %>>Engineer</option>
+              <option value="Student" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Student' ? 'selected' : '' %>>Student</option>
+              <option value="Entrepreneur" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Entrepreneur' ? 'selected' : '' %>>Entrepreneur</option>
+              <option value="Other" <%= typeof submittedData !== 'undefined' && submittedData && submittedData.userOccupationField === 'Other' ? 'selected' : '' %>>Other</option>
+            </select>
+          </div>
+          <span class="error-message" id="occupationError">
+            <%- typeof submissionErrors !== 'undefined' && submissionErrors && submissionErrors.occupation ? submissionErrors.occupation : '' %>
+          </span>
+        </div>
+
+        <!-- Message -->
+        <div class="form-group-wrapper">
+          <label for="message" class="form-label">
+            Message
+            <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <textarea 
+              class="form-control" 
+              id="message" 
+              name="message" 
+              rows="4"
+              placeholder="Enter your message here (minimum 10 characters)"
+              required><%= typeof submittedData !== 'undefined' && submittedData ? submittedData.userMessageField : '' %></textarea>
+          </div>
+          <span class="error-message" id="messageError">
+            <%- typeof submissionErrors !== 'undefined' && submissionErrors && submissionErrors.message ? submissionErrors.message : '' %>
+          </span>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group-wrapper" style="margin-top: 35px;">
+          <button type="submit" class="submit-button" id="submitBtn">
+            <span id="submitText">Submit Form</span>
+            <div class="loading-spinner" id="loadingSpinner"></div>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    (function() {
+      const contactForm = document.getElementById('contactForm');
+      const passwordInput = document.getElementById('password');
+      const passwordStrength = document.getElementById('passwordStrength');
+      const passwordStrengthBar = document.getElementById('passwordStrengthBar');
+      const submitBtn = document.getElementById('submitBtn');
+      
+      // Password strength indicator
+      passwordInput.addEventListener('input', function() {
+        const password = this.value;
+        if (password.length > 0) {
+          passwordStrength.classList.add('active');
+          let strength = 0;
+          
+          if (password.length >= 6) strength++;
+          if (password.length >= 8) strength++;
+          if (/[A-Z]/.test(password)) strength++;
+          if (/[0-9]/.test(password)) strength++;
+          if (/[^A-Za-z0-9]/.test(password)) strength++;
+          
+          passwordStrengthBar.className = 'password-strength-bar';
+          if (strength <= 2) {
+            passwordStrengthBar.classList.add('weak');
+          } else if (strength <= 3) {
+            passwordStrengthBar.classList.add('medium');
+          } else {
+            passwordStrengthBar.classList.add('strong');
+          }
+        } else {
+          passwordStrength.classList.remove('active');
+        }
+      });
+      
+      contactForm.addEventListener('submit', function(e) {
+        let isValid = true;
+        
+        function displayError(elementId, message) {
+          const errorElement = document.getElementById(elementId);
+          if (errorElement) {
+            errorElement.textContent = message;
+          }
+        }
+        
+        function clearError(elementId) {
+          const errorElement = document.getElementById(elementId);
+          if (errorElement) {
+            errorElement.textContent = '';
+          }
+        }
+        
+        ['nameError', 'emailError', 'phoneError', 'genderError', 'dobError', 'passwordError', 'confirmPasswordError', 'countryError', 'occupationError', 'messageError'].forEach(clearError);
+        
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const gender = document.getElementById('gender').value;
+        const dob = document.getElementById('dob').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const country = document.getElementById('country').value;
+        const occupation = document.getElementById('occupation').value;
+        const message = document.getElementById('message').value.trim();
+        
+        if (name.length < 2) {
+          displayError('nameError', 'Name must contain at least 2 characters.');
+          isValid = false;
+        }
+        
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailPattern.test(email)) {
+          displayError('emailError', 'Please enter a valid email address.');
+          isValid = false;
+        }
+        
+        const phoneDigits = phone.replace(/\D/g, '');
+        if (phoneDigits.length < 10) {
+          displayError('phoneError', 'Phone number must contain at least 10 digits.');
+          isValid = false;
+        }
+        
+        if (!gender) {
+          displayError('genderError', 'Please select your gender.');
+          isValid = false;
+        }
+        
+        if (!occupation) {
+          displayError('occupationError', 'Please select your occupation.');
+          isValid = false;
+        }
+        
+        if (dob.length === 0) {
+          displayError('dobError', 'Date of birth is required.');
+          isValid = false;
+        }
+        
+        if (password.length < 6) {
+          displayError('passwordError', 'Password must be at least 6 characters.');
+          isValid = false;
+        }
+        
+        if (password !== confirmPassword) {
+          displayError('confirmPasswordError', 'Passwords do not match.');
+          isValid = false;
+        }
+        
+        if (!country) {
+          displayError('countryError', 'Please select your country.');
+          isValid = false;
+        }
+        
+        if (message.length < 10) {
+          displayError('messageError', 'Message must contain at least 10 characters.');
+          isValid = false;
+        }
+        
+        if (!isValid) {
+          e.preventDefault();
+        } else {
+          submitBtn.disabled = true;
+          document.getElementById('submitText').style.display = 'none';
+          document.getElementById('loadingSpinner').style.display = 'block';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
