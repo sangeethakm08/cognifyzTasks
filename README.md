@@ -52,3 +52,28 @@ Inline JavaScript validation
 Validated data displayed using EJS
 
 Clean Express server with validation logic
+
+###  Task 3 — Advanced CSS Styling & Responsive Design
+Key Learnings
+
+Building multi-section page layouts with modern CSS
+
+Applying advanced styling such as transitions, shadows, spacing, and hover effects
+
+Implementing fully responsive design using Flexbox/Grid
+
+Using media queries to optimize the layout across devices
+
+Integrating a CSS framework like Bootstrap for consistent UI components
+
+Deliverables
+
+Fully styled and responsive webpage
+
+Multi-section layout with improved visual hierarchy
+
+CSS animations/transitions applied where needed
+
+Bootstrap (or other CSS framework) integrated
+
+Organized stylesheet for easy scalability
