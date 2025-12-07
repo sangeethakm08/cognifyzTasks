@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management System - API Integration</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --success-color: #10b981;
+      --danger-color: #ef4444;
+      --warning-color: #f59e0b;
+      --info-color: #3b82f6;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+      --bg-light: #f9fafb;
+      --border-color: #e5e7eb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--primary-gradient);
+      min-height: 100vh;
+      padding: 30px 20px;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.2) 0%, transparent 50%);
+      z-index: 0;
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .header-card h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .header-card p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+    }
+
+    .action-bar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 250px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 45px 12px 15px;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    .search-box i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+    }
+
+    .btn-primary-custom {
+      background: var(--primary-gradient);
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary-custom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      color: white;
+    }
+
+    .users-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .users-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .users-header h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .users-count {
+      background: var(--primary-gradient);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .users-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .user-card {
+      background: white;
+      border: 2px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .user-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-color: #667eea;
+    }
+
+    .user-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 15px;
+    }
+
+    .user-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--primary-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .user-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    .btn-edit {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--info-color);
+    }
+
+    .btn-edit:hover {
+      background: var(--info-color);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .btn-delete {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger-color);
+    }
+
+    .btn-delete:hover {
+      background: var(--danger-color);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .user-info {
+      margin-bottom: 15px;
+    }
+
+    .user-info-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+    }
+
+    .user-info-item i {
+      color: var(--text-light);
+      width: 20px;
+    }
+
+    .user-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(102, 126, 234, 0.1);
+      color: #667eea;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .modal-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close-btn:hover {
+      color: var(--danger-color);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 25px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary {
+      background: var(--bg-light);
+      color: var(--text-dark);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border-color);
+    }
+
+    .btn-success {
+      background: var(--success-color);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #059669;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Loading State */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-light);
+    }
+
+    .loading i {
+      font-size: 2rem;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-light);
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      display: none;
+      align-items: center;
+      gap: 12px;
+      z-index: 2000;
+      animation: slideInRight 0.3s ease;
+    }
+
+    .toast.show {
+      display: flex;
+    }
+
+    .toast.success {
+      border-left: 4px solid var(--success-color);
+    }
+
+    .toast.error {
+      border-left: 4px solid var(--danger-color);
+    }
+
+    .toast.info {
+      border-left: 4px solid var(--info-color);
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .users-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .action-bar {
+        flex-direction: column;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <!-- Header -->
+    <div class="header-card">
+      <h1><i class="bi bi-people-fill"></i> User Management System</h1>
+      <p>RESTful API Integration with CRUD Operations</p>
+    </div>
+
+    <!-- Action Bar -->
+    <div class="action-bar">
+      <div class="search-box">
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Search users by name, email, occupation, or country..."
+          autocomplete="off">
+        <i class="bi bi-search"></i>
+      </div>
+      <button class="btn-primary-custom" onclick="openCreateModal()">
+        <i class="bi bi-plus-circle"></i>
+        Add New User
+      </button>
+    </div>
+
+    <!-- Users Container -->
+    <div class="users-container">
+      <div class="users-header">
+        <h2>Users Directory</h2>
+        <span class="users-count" id="usersCount">0 Users</span>
+      </div>
+      <div id="usersGrid" class="users-grid">
+        <div class="loading">
+          <i class="bi bi-arrow-repeat"></i>
+          <p>Loading users...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create/Edit Modal -->
+  <div class="modal-overlay" id="userModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add New User</h3>
+        <button class="close-btn" onclick="closeModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <form id="userForm">
+        <input type="hidden" id="userId" name="id">
+        
+        <div class="form-group">
+          <label class="form-label" for="name">Full Name *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="name" 
+            name="name" 
+            required
+            placeholder="Enter full name">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address *</label>
+          <input 
+            type="email" 
+            class="form-control" 
+            id="email" 
+            name="email" 
+            required
+            placeholder="user@example.com">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="phone">Phone Number *</label>
+          <input 
+            type="tel" 
+            class="form-control" 
+            id="phone" 
+            name="phone" 
+            required
+            placeholder="+1234567890">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="occupation">Occupation *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="occupation" 
+            name="occupation" 
+            required
+            placeholder="e.g., Software Engineer">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="country">Country *</label>
+          <select class="form-control" id="country" name="country" required>
+            <option value="">Select Country</option>
+            <option value="USA">United States</option>
+            <option value="UK">United Kingdom</option>
+            <option value="Canada">Canada</option>
+            <option value="India">India</option>
+            <option value="Australia">Australia</option>
+            <option value="Germany">Germany</option>
+            <option value="France">France</option>
+            <option value="Japan">Japan</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-lg"></i> Save User
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <i class="bi" id="toastIcon"></i>
+    <span id="toastMessage"></span>
+  </div>
+
+  <script>
+    // API Base URL
+    const API_BASE = '/api/users';
+    let currentEditId = null;
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadUsers();
+      setupEventListeners();
+    });
+
+    // Setup Event Listeners
+    function setupEventListeners() {
+      // Search functionality
+      const searchInput = document.getElementById('searchInput');
+      let searchTimeout;
+      searchInput.addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          const query = e.target.value.trim();
+          if (query) {
+            searchUsers(query);
+          } else {
+            loadUsers();
+          }
+        }, 300);
+      });
+
+      // Form submission
+      document.getElementById('userForm').addEventListener('submit', handleFormSubmit);
+    }
+
+    // ============================================
+    // API Functions - CRUD Operations
+    // ============================================
+
+    // GET - Fetch all users
+    async function loadUsers() {
+      try {
+        showLoading();
+        const response = await fetch(API_BASE);
+        const result = await response.json();
+
+        if (result.success) {
+          displayUsers(result.data);
+          updateUsersCount(result.count);
+        } else {
+          showToast('error', 'Failed to load users');
+        }
+      } catch (error) {
+        console.error('Error loading users:', error);
+        showToast('error', 'Error connecting to server');
+        showEmptyState();
+      }
+    }
+
+    // GET - Search users
+    async function searchUsers(query) {
+      try {
+        showLoading();
+        const response = await fetch(`${API_BASE}/search/${encodeURIComponent(query)}`);
+        const result = await response.json();
+
+        if (result.success) {
+          displayUsers(result.data);
+          updateUsersCount(result.count, query);
+        } else {
+          showToast('error', 'Search failed');
+        }
+      } catch (error) {
+        console.error('Error searching users:', error);
+        showToast('error', 'Error searching users');
+      }
+    }
+
+    // POST - Create user
+    async function createUser(userData) {
+      try {
+        const response = await fetch(API_BASE, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showToast('success', 'User created successfully!');
+          closeModal();
+          loadUsers();
+          return true;
+        } else {
+          showToast('error', result.message || 'Failed to create user');
+          return false;
+        }
+      } catch (error) {
+        console.error('Error creating user:', error);
+        showToast('error', 'Error creating user');
+        return false;
+      }
+    }
+
+    // PUT - Update user
+    async function updateUser(userId, userData) {
+      try {
+        const response = await fetch(`${API_BASE}/${userId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showToast('success', 'User updated successfully!');
+          closeModal();
+          loadUsers();
+          return true;
+        } else {
+          showToast('error', result.message || 'Failed to update user');
+          return false;
+        }
+      } catch (error) {
+        console.error('Error updating user:', error);
+        showToast('error', 'Error updating user');
+        return false;
+      }
+    }
+
+    // DELETE - Delete user
+    async function deleteUser(userId) {
+      if (!confirm('Are you sure you want to delete this user?')) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/${userId}`, {
+          method: 'DELETE'
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showToast('success', 'User deleted successfully!');
+          loadUsers();
+        } else {
+          showToast('error', result.message || 'Failed to delete user');
+        }
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        showToast('error', 'Error deleting user');
+      }
+    }
+
+    // GET - Fetch single user
+    async function getUserById(userId) {
+      try {
+        const response = await fetch(`${API_BASE}/${userId}`);
+        const result = await response.json();
+
+        if (result.success) {
+          return result.data;
+        } else {
+          showToast('error', result.message || 'User not found');
+          return null;
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error);
+        showToast('error', 'Error fetching user details');
+        return null;
+      }
+    }
+
+    // ============================================
+    // UI Functions
+    // ============================================
+
+    // Display users in grid
+    function displayUsers(users) {
+      const grid = document.getElementById('usersGrid');
+      
+      if (!users || users.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <h3>No users found</h3>
+            <p>Click "Add New User" to create your first user</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = users.map(user => `
+        <div class="user-card">
+          <div class="user-header">
+            <div class="user-avatar">
+              ${user.name.charAt(0).toUpperCase()}
+            </div>
+            <div class="user-actions">
+              <button class="btn-icon btn-edit" onclick="openEditModal(${user.id})" title="Edit">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn-icon btn-delete" onclick="deleteUser(${user.id})" title="Delete">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+          <div class="user-info">
+            <div class="user-info-item">
+              <i class="bi bi-person"></i>
+              <strong>${user.name}</strong>
+            </div>
+            <div class="user-info-item">
+              <i class="bi bi-envelope"></i>
+              <span>${user.email}</span>
+            </div>
+            <div class="user-info-item">
+              <i class="bi bi-telephone"></i>
+              <span>${user.phone}</span>
+            </div>
+            <div class="user-info-item">
+              <i class="bi bi-briefcase"></i>
+              <span>${user.occupation}</span>
+            </div>
+            <div class="user-info-item">
+              <i class="bi bi-globe"></i>
+              <span class="user-badge">${user.country}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Update users count
+    function updateUsersCount(count, searchQuery = null) {
+      const countElement = document.getElementById('usersCount');
+      if (searchQuery) {
+        countElement.textContent = `${count} Result${count !== 1 ? 's' : ''}`;
+      } else {
+        countElement.textContent = `${count} User${count !== 1 ? 's' : ''}`;
+      }
+    }
+
+    // Show loading state
+    function showLoading() {
+      const grid = document.getElementById('usersGrid');
+      grid.innerHTML = `
+        <div class="loading">
+          <i class="bi bi-arrow-repeat"></i>
+          <p>Loading users...</p>
+        </div>
+      `;
+    }
+
+    // Show empty state
+    function showEmptyState() {
+      const grid = document.getElementById('usersGrid');
+      grid.innerHTML = `
+        <div class="empty-state">
+          <i class="bi bi-exclamation-circle"></i>
+          <h3>Unable to load users</h3>
+          <p>Please check your connection and try again</p>
+        </div>
+      `;
+    }
+
+    // Open create modal
+    function openCreateModal() {
+      currentEditId = null;
+      document.getElementById('modalTitle').textContent = 'Add New User';
+      document.getElementById('userForm').reset();
+      document.getElementById('userId').value = '';
+      document.getElementById('userModal').classList.add('show');
+    }
+
+    // Open edit modal
+    async function openEditModal(userId) {
+      currentEditId = userId;
+      document.getElementById('modalTitle').textContent = 'Edit User';
+      
+      const user = await getUserById(userId);
+      if (user) {
+        document.getElementById('userId').value = user.id;
+        document.getElementById('name').value = user.name;
+        document.getElementById('email').value = user.email;
+        document.getElementById('phone').value = user.phone;
+        document.getElementById('occupation').value = user.occupation;
+        document.getElementById('country').value = user.country;
+        document.getElementById('userModal').classList.add('show');
+      }
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById('userModal').classList.remove('show');
+      currentEditId = null;
+      document.getElementById('userForm').reset();
+    }
+
+    // Handle form submission
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+
+      const formData = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        occupation: document.getElementById('occupation').value.trim(),
+        country: document.getElementById('country').value
+      };
+
+      let success = false;
+      if (currentEditId) {
+        success = await updateUser(currentEditId, formData);
+      } else {
+        success = await createUser(formData);
+      }
+
+      if (success) {
+        closeModal();
+      }
+    }
+
+    // Show toast notification
+    function showToast(type, message) {
+      const toast = document.getElementById('toast');
+      const icon = document.getElementById('toastIcon');
+      const messageEl = document.getElementById('toastMessage');
+
+      toast.className = `toast ${type}`;
+      
+      if (type === 'success') {
+        icon.className = 'bi bi-check-circle-fill';
+        icon.style.color = 'var(--success-color)';
+      } else if (type === 'error') {
+        icon.className = 'bi bi-x-circle-fill';
+        icon.style.color = 'var(--danger-color)';
+      } else {
+        icon.className = 'bi bi-info-circle-fill';
+        icon.style.color = 'var(--info-color)';
+      }
+
+      messageEl.textContent = message;
+      toast.classList.add('show');
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Close modal on overlay click
+    document.getElementById('userModal').addEventListener('click', (e) => {
+      if (e.target.id === 'userModal') {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
+

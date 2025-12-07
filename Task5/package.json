@@ -1,0 +1,17 @@
+{
+  "name": "task5",
+  "version": "1.0.0",
+  "description": "RESTful API Integration and Front-End Interaction",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.2.1"
+  }
+}
